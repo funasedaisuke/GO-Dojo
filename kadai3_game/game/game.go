@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"main/word"
 )
 
 type Game struct{
@@ -16,16 +17,26 @@ func(g *Game)Run()int{
 	//GAMEを始める
 	st_ch :=start_game(os.Stdout)
 	<-st_ch
-	//問題を入力する
+	//答えを入力する
 	//ch :=inputWords()
+	ch := input(os.Stdout)
+	fmt.Print(ch)
+	//問題を入力
+	_,err := word.GetWords()
+	if err !=nil{
+		return 0
+	}
+
+
 	
 	return 1
 } 
 
 func start_game(r io.Reader)(chan struct{}){
 	fmt.Println("-----------Start Game-----------")
-	fmt.Println("----------------------------")
+	fmt.Println("--------------------------------")
 	fmt.Println("------Please type anything------")
+	fmt.Println(">")
 	sch := make(chan struct{})
 	go func(){
 		scanner := bufio.NewScanner(r)
@@ -37,6 +48,17 @@ func start_game(r io.Reader)(chan struct{}){
 	}()
 	return sch
 
+}
 
+func input(r io.Reader)(chan string){
+	ch := make(chan string)
+	go func(){
+		scanner := bufio.NewScanner(r)
+		for scanner.Scan(){
+			ch <- scanner.Text()
+		}
+		close(ch)
+	}()
+	return ch
 
 }

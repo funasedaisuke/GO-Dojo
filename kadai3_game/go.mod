@@ -1,3 +1,3 @@
-module kadai3_game
+module main
 
 go 1.18
