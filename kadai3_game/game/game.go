@@ -21,11 +21,14 @@ func(g *Game)Run()int{
 	//ch :=inputWords()
 	ch := input(os.Stdout)
 	fmt.Print(ch)
+	
 	//問題を入力
-	_,err := word.GetWords()
+	words,err := word.GetWords()
 	if err !=nil{
 		return 0
 	}
+	fmt.Print("--------")
+	fmt.Print(words)
 
 
 	
