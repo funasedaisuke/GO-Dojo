@@ -7,6 +7,7 @@ import (
 	"main/word"
 	"os"
 	"time"
+	"math"
 )
 
 type Game struct {
@@ -55,11 +56,25 @@ Outer:
 			}
 		}
 	}
+	fmt.Print("終了")
 	fmt.Printf("回答数:%d\n",answerCount)
 	fmt.Printf("正解数:%d\n",correctAnswerCount)
-	fmt.Printf("正解率:%d\n%",(correctAnswerCount/answerCount)*100)
+	correctness := float64(answerCount)
+	if correctness != 0{
+		correctness := roundPlus((float64(correctAnswerCount)/float64(answerCount))*100,2)
+	}
 
+	fmt.Printf("正解率:%d\n",correctness)
 	return 1
+}
+
+func round(f float64)float64{
+	return math.floor(f +0.5)
+}
+
+func roundPlus(f float64 ,digit int)float64{
+	shift := math.Pow(10,float64(digit))
+	return round(f * shift) / shift
 }
 
 func start_game(r io.Reader) chan struct{} {
